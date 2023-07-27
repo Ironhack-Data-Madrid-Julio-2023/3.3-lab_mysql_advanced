@@ -19,7 +19,9 @@ on s.title_id = r.title_id
 
 group by a.au_id, ta.title_id) patata
 
-group by patata.author_id;
+group by patata.author_id
+order by total_profit desc
+limit 3;
 
 
 /* Challenge 2 -------------------------------------------------------------------------------------------- */ 
@@ -41,8 +43,9 @@ group by a.au_id, ta.title_id;
 
 select p.author_id as author_id, sum(p.profit) as total_profit 
 from publications.patata as p
-group by p.author_id;
-
+group by p.author_id
+order by total_profit desc
+limit 3;
 
 /* Challenge 3 -------------------------------------------------------------------------------------------- */
 
@@ -50,7 +53,9 @@ create table publications.most_profiting_authors
 /*Contando con la tabla temporal creada arriba, si no habría que volver a crearla o utilizar derived tables como he hecho en challenge 1*/
 select p.author_id as author_id, sum(p.profit) as total_profit 
 from publications.patata as p
-group by p.author_id;
+group by p.author_id
+order by total_profit desc
+limit 3;
 
 
 
