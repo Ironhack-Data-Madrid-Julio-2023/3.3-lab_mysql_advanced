@@ -1,11 +1,11 @@
 
-/* Challenge 3 -------------------------------------------------------------------------------------------- */ 
+/* Challenge 1 -------------------------------------------------------------------------------------------- */ 
 
 select patata.author_id as author_id, sum(patata.profit) as total_profit 
 
 from
 (select a.au_id as author_id, t.title_id as title,
-sum(t.price * s.qty * t.royalty / 100 * ta.royaltyper / 100) + t.advance as profit
+sum(t.price * s.qty * t.royalty / 100 * ta.royaltyper / 100 + t.advance) as profit
 
 from authors as a
 inner join titleauthor as ta
@@ -14,8 +14,6 @@ left join titles as t
 on ta.title_id = t.title_id
 left join sales as s
 on s.title_id = t.title_id
-left join roysched as r
-on s.title_id = r.title_id
 
 group by a.au_id, ta.title_id) patata
 
@@ -29,17 +27,14 @@ limit 3;
 
 create temporary table publications.patata
 select a.au_id as author_id, t.title_id as title,
-sum(t.price * s.qty * t.royalty / 100 * ta.royaltyper / 100) + t.advance as profit
+sum(t.price * s.qty * t.royalty / 100 * ta.royaltyper / 100 + t.advance)  as profit
 from authors as a
 inner join titleauthor as ta
 on ta.au_id = a.au_id
 left join titles as t
 on ta.title_id = t.title_id
 left join sales as s
-on s.title_id = t.title_id
-left join roysched as r
-on s.title_id = r.title_id
-group by a.au_id, ta.title_id;
+on s.title_id = t.title_id;
 
 select p.author_id as author_id, sum(p.profit) as total_profit 
 from publications.patata as p
